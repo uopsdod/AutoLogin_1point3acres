@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+     <Properties>
+      <!-- 參考網站: http://blog.csdn.net/seven_zhao/article/details/42124131 -->
+          <property name="log_basePath">log4j2</property>
+          <property name="log_backup_basePath">${log_basePath}/backup</property>
+     </Properties>
+
+ <Appenders>
+  <Console name="Console" target="SYSTEM_OUT">
+   <!-- <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} 
+    - %msg%n"/> -->
+   <PatternLayout pattern="%msg%n" />
+  </Console>
+
+  <Console name="commonConsole" target="SYSTEM_OUT">
+   <!-- <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%C-%L] - %msg%n"/> -->
+   <PatternLayout pattern="[%d{yy/MM/dd HH:mm:ss.SSS}][%5p][%-35C-%-5L] - %m%n" />
+  </Console>
+
+  <File name="commonFile" fileName="${log_basePath}/common.log">
+   <PatternLayout>
+    <Pattern>[%d{yy/MM/dd HH:mm:ss.SSS}][%5p][%-35C-%-5L] - %m%n</Pattern>
+   </PatternLayout>
+  </File>
+  
+    <!-- 按天第天备份一个日志 -->
+        <RollingFile name="dailyCommonFile" fileName="${log_basePath}/dailyCommon.log"
+            filePattern="${log_backup_basePath}/dailyCommon_%d{yyyy-MM-dd}_%i.log">
+<!--   <RollingFile name="dailyCommonFile" fileName="d:/log2" filePattern="d:/backup-%i.log">             -->
+   <PatternLayout>
+    <Pattern>[%d{yy/MM/dd HH:mm:ss}][%5p][%-35C-%-5L] - %m%n</Pattern>
+   </PatternLayout>
+            <Policies>
+             <!-- 每天更新一次 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+                <!-- 每10MB換一個檔案 -->
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+   <!-- 每日最多备份10个(index) -->
+   <DefaultRolloverStrategy max="10">
+    <Delete basePath="${log_backup_basePath}" maxDepth="1">
+     <IfFileName glob="dailyCommon_*.log" />
+     <!-- 檔案保留60天 -->
+     <IfLastModified age="60d" />
+    </Delete>  
+   </DefaultRolloverStrategy>
+        </RollingFile>
+
+ </Appenders>
+ <Loggers>
+  <Root level="INFO"> <!-- INFO --> <!-- 若改成DEBUG,會印出許多非自行設定的資訊, ex mybatis -->
+  </Root>
+  <!-- 給一般file使用 -->
+  <logger name="util.consoleLogger" level="debug" additivity="false">
+   <AppenderRef ref="commonConsole" />
+  </logger>
+  <logger name="util.fileLogger" level="info" additivity="false">
+   <AppenderRef ref="commonFile" />
+  </logger>
+  <logger name="util.dailyFileLogger" level="info" additivity="false">
+   <AppenderRef ref="dailyCommonFile" />
+  </logger>
+ </Loggers>
+</Configuration>
+<!-- reference:  -->
+<!-- http://www.journaldev.com/7128/log4j2-example-tutorial-configuration-levels-appenders -->
