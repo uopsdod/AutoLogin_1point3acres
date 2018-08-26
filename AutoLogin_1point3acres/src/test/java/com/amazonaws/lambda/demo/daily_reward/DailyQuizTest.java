@@ -16,6 +16,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost.RESULT;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
@@ -44,7 +46,7 @@ public class DailyQuizTest {
     	
     	Assert.assertEquals(isLogined, true);
     	
-    	String dailyQuizStatus = "NOT_EXECUTED";
+    	DailyQuizHttpPost.RESULT dailyQuizStatus = DailyQuizHttpPost.RESULT.NOT_EXECUTED;
     	String findDailyQuizAns = "";
     	String findDailyQuizFormhash = "";
     	try {
@@ -53,11 +55,11 @@ public class DailyQuizTest {
 				findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
 				if (!findDailyQuizFormhash.isEmpty()) {
 					dailyQuizStatus = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
-					Assert.assertTrue(dailyQuizStatus.equals("SUCCEEDED") 
-									|| dailyQuizStatus.equals("FAILED"));
+					Assert.assertTrue(dailyQuizStatus.equals(DailyQuizHttpPost.RESULT.SUCCEEDED) 
+									|| dailyQuizStatus.equals(DailyQuizHttpPost.RESULT.FAILED));
 				}
 			}
-			Assert.assertEquals(dailyQuizStatus, "NOT_EXECUTED");
+			Assert.assertEquals(dailyQuizStatus, DailyQuizHttpPost.RESULT.NOT_EXECUTED);
     	} catch (Exception e) {
     		DailyRewardUtil.getLogger().log(Level.WARNING, e);
     		if (findDailyQuizAns.isEmpty()) {

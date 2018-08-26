@@ -37,6 +37,10 @@ public class DailyQuizHttpPost extends HttpPost{
 			"true\r\n" + 
 			"------WebKitFormBoundarybDMuZYRqRgOKYQWW--";
 	
+	public static enum RESULT {
+		NOT_EXECUTED, SUCCEEDED, FAILED
+	}
+	
 	private DailyQuizHttpPost(String answer, String formhash) throws UnsupportedEncodingException {
 		super(DailyQuizHttpPost.DAILY_QUIZ_URL);
         

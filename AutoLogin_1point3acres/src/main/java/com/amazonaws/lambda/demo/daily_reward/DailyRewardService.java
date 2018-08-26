@@ -71,9 +71,9 @@ public class DailyRewardService {
 		return SignInHttpPost.getFormHash(this.client);
 	}
 	
-	public String dailyQuiz(String ans, String formhash) {
+	public DailyQuizHttpPost.RESULT dailyQuiz(String ans, String formhash) {
 		DailyRewardUtil.getLogger().log(Level.INFO, "dailyQuiz starts");
-		String dailyQuizStatus = "NOT_EXECUTED";
+		DailyQuizHttpPost.RESULT dailyQuizStatus = DailyQuizHttpPost.RESULT.NOT_EXECUTED;
 		try {
 			// TODO: add condition to check whether quiz questions are in the database. If not, skip this part.
 			
@@ -84,10 +84,10 @@ public class DailyRewardService {
 				// TODO: add success condition description
 				boolean success = true;
 				if (success) {
-					dailyQuizStatus = "SUCCEEDED";
+					dailyQuizStatus = DailyQuizHttpPost.RESULT.SUCCEEDED;
 					DailyRewardUtil.getLogger().log(Level.INFO, "dailyQuiz succeeded");
 				}else {
-					dailyQuizStatus = "FAILED";
+					dailyQuizStatus = DailyQuizHttpPost.RESULT.FAILED;
 				}
 			}
 		} catch (IOException e) {

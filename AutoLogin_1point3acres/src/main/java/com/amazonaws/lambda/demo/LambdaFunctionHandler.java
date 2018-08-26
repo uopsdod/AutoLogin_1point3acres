@@ -7,6 +7,8 @@ import org.junit.Assert;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost.RESULT;
 import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.demo.util.MyLambdaLogger;
@@ -32,15 +34,15 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
     @Override
     public String handleRequest(DailyRewardInput input, Context context) {
     	DailyRewardUtil.setLogger(new MyLambdaLogger(context.getLogger()));
-    	DailyRewardUtil.getLogger().log(Level.INFO, "handleRequest starts");
-    	DailyRewardUtil.getLogger().log(Level.INFO, "Received input: " + ReflectionToStringBuilder.toString(input));
-    	DailyRewardUtil.getLogger().log(Level.INFO, "Received context: " + ReflectionToStringBuilder.toString(context));
+    	DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function starts");
+    	DailyRewardUtil.getLogger().log(Level.INFO, "input DailyRewardInput: " + ReflectionToStringBuilder.toString(input));
+    	DailyRewardUtil.getLogger().log(Level.INFO, "input Context: " + ReflectionToStringBuilder.toString(context));
         
         /** Get Daily Reward **/
 		execute(input.getUsername(), input.getPassword()); // correct
         
 		
-		DailyRewardUtil.getLogger().log(Level.INFO, "handleRequest ends");
+		DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function ends");
 		
         // Return will include the log stream name so you can look 
         // up the log later.
@@ -51,7 +53,7 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 		
 		boolean isLogined = false;
 		boolean isDailySignInDone = false;
-		String dailyQuizStatus = "";
+		RESULT dailyQuizStatus = DailyQuizHttpPost.RESULT.NOT_EXECUTED;
 		
     	/** login **/
 		String dailySignInFormHash = "";
@@ -89,7 +91,7 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 			DailyRewardUtil.getLogger().log(Level.WARNING, e);
 		}			
 		
-		String result = String.format("Final result: isLoginDone: %b, isDailySignInDone: %b, DailyQuizStatus: %s", isLogined, isDailySignInDone, dailyQuizStatus);
+		String result = String.format("Final result: isLoginDone: %b, isDailySignInDone: %b, DailyQuizStatus: %s%n", isLogined, isDailySignInDone, dailyQuizStatus.name());
 		DailyRewardUtil.getLogger().log(Level.INFO, result);
 		
 		/** get login page **/
