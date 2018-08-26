@@ -4,6 +4,9 @@ public class DailyRewardInput {
 	private String username;
 	private String password;
 	
+	/** required for lambda pojo input **/
+	public DailyRewardInput() {}
+	
 	public DailyRewardInput(String username, String password) {
 		super();
 		this.username = username;

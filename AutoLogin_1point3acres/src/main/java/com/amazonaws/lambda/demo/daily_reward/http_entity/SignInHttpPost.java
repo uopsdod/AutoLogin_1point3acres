@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 
 public class SignInHttpPost extends HttpPost{
 	static private final String SIGNIN_URL = "http://www.1point3acres.com/bbs/plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1";
@@ -58,6 +61,7 @@ public class SignInHttpPost extends HttpPost{
 	}
 	
 	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
+		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash starts");
 		String resStrGetSignin = "";
 		String formhash = "";
 		try {
@@ -70,7 +74,6 @@ public class SignInHttpPost extends HttpPost{
 			
 		if (resStrGetSignin.contains("已经签到")
 			|| resStrGetSignin.contains("签到时间还未开始")) {
-			System.out.println("You've already signed in today");
 			throw new Exception("You've already signed in today");
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
@@ -81,7 +84,7 @@ public class SignInHttpPost extends HttpPost{
 				System.out.println(formhash);
 			}				
 		}
-		
+		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash ends");
 		return formhash;	
 	}
 	

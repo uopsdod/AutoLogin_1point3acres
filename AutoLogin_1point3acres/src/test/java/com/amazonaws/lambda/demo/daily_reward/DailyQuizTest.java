@@ -42,7 +42,7 @@ public class DailyQuizTest {
     	
     	Assert.assertEquals(isLogined, true);
     	
-    	boolean isDailyQuizDone = false;
+    	String dailyQuizStatus = "NOT_EXECUTED";
     	String findDailyQuizAns = "";
     	String findDailyQuizFormhash = "";
     	try {
@@ -50,11 +50,12 @@ public class DailyQuizTest {
 			if (!findDailyQuizAns.isEmpty()) {
 				findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
 				if (!findDailyQuizFormhash.isEmpty()) {
-					isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
-					Assert.assertEquals(isDailyQuizDone, true);
+					dailyQuizStatus = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
+					Assert.assertTrue(dailyQuizStatus.equals("SUCCEEDED") 
+									|| dailyQuizStatus.equals("FAILED"));
 				}
 			}
-			Assert.assertEquals(isDailyQuizDone, false);
+			Assert.assertEquals(dailyQuizStatus, "NOT_EXECUTED");
     	} catch (Exception e) {
     		if (findDailyQuizAns.isEmpty()) {
     			Assert.assertEquals(e.getMessage(), "no question-ans information in database");

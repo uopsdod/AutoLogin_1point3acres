@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,13 +69,6 @@ public class LambdaFunctionHandlerTest {
         String accessKeyId = System.getProperty("aws.accessKeyId");
         String accessSecretKey = System.getProperty("aws.accessSecretKey");
         String region = System.getProperty("aws.region");
-        
-//        S3Service s3Sample = new S3Service();
-        try {
-        	S3Service.test(accessKeyId, accessSecretKey, region);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
         
         DailyRewardInput AutoLoginInput = new DailyRewardInput(username, password);
         

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 
 public class DailyQuizHttpPost extends HttpPost{
 	static private final String DAILY_QUIZ_URL = "http://www.1point3acres.com/bbs/plugin.php?id=ahome_dayquestion:pop";
@@ -64,12 +67,12 @@ public class DailyQuizHttpPost extends HttpPost{
 	}
 	
 	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
+		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash starts");
 		String formhash = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
 		if (resStrGetSignin.contains("已经参加过")
 			|| resStrGetSignin.contains("您今天已经参加过答题")) {
-			System.out.println("You've answered the question today");
 			throw new Exception("You've answered the question today");
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
@@ -80,22 +83,23 @@ public class DailyQuizHttpPost extends HttpPost{
 				System.out.println(formhash);
 			}				
 		}
+		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash ends");
 		return formhash;	
 	}
 	
 	static public String getAns(org.apache.http.client.HttpClient client) throws Exception {
+		DailyRewardUtil.getLogger().log(Level.INFO, "getAns starts");
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
 		// TODO: add logic here 
-		System.out.println("no question-ans information in database");
 		boolean found = false;
 		if (found) {
 			
 		}else {
 			throw new Exception("no question-ans information in database");
 		}
-		
+		DailyRewardUtil.getLogger().log(Level.INFO, "getAns ends");
 		return ans;
 	}
 	
