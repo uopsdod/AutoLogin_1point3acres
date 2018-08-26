@@ -22,6 +22,7 @@ import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 public class DailyQuizHttpPost extends HttpPost{
 	static private final String DAILY_QUIZ_URL = "http://www.1point3acres.com/bbs/plugin.php?id=ahome_dayquestion:pop";
 	static private final String DAILY_QUIZ_PAGE_URL = "http://www.1point3acres.com/bbs/plugin.php?id=ahome_dayquestion:pop";
+	static public final String DAILY_QUIZ_ERROR_ANS = "DailyQuiz getAns no question-ans information in database";
 	static private String PAYLOAD_FORMAT = 
 			"------WebKitFormBoundarybDMuZYRqRgOKYQWW\r\n" + 
 			"Content-Disposition: form-data; name=\"formhash\"\r\n" + 
@@ -92,7 +93,7 @@ public class DailyQuizHttpPost extends HttpPost{
 	}
 	
 	static public String getAns(org.apache.http.client.HttpClient client) throws Exception {
-		DailyRewardUtil.getLogger().log(Level.INFO, "getAns starts");
+		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getAns getAns starts");
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
@@ -101,9 +102,9 @@ public class DailyQuizHttpPost extends HttpPost{
 		if (found) {
 			
 		}else {
-			throw new Exception("no question-ans information in database");
+			throw new Exception(DailyQuizHttpPost.DAILY_QUIZ_ERROR_ANS);
 		}
-		DailyRewardUtil.getLogger().log(Level.INFO, "getAns ends");
+		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getAns ends");
 		return ans;
 	}
 	

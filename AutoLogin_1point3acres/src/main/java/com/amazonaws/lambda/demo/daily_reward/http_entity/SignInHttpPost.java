@@ -22,7 +22,7 @@ public class SignInHttpPost extends HttpPost{
 	static private final String SIGNIN_URL = "http://www.1point3acres.com/bbs/plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1";
 	static private final String SIGNIN_PAGE_URL = "http://www.1point3acres.com/bbs/dsu_paulsign-sign.html";
 	
-	static public final String ERROR_GETFORMHASH = "SignIn getFormHash You've already signed in today";
+	static public final String ERROR_GETFORMHASH = "dailySignIn getFormHash You've already signed in today";
 	
 	private SignInHttpPost(String formhash) throws UnsupportedEncodingException {
 		super(SignInHttpPost.SIGNIN_URL);
@@ -63,7 +63,7 @@ public class SignInHttpPost extends HttpPost{
 	}
 	
 	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
-		DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash starts");
+		DailyRewardUtil.getLogger().log(Level.INFO, "dailySignIn getFormHash starts");
 		String resStrGetSignin = "";
 		String formhash = "";
 		try {
@@ -83,10 +83,10 @@ public class SignInHttpPost extends HttpPost{
 
 			if (matcher.find()) {
 				formhash = matcher.group(1);
-				DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash formhash: " + formhash);
+				DailyRewardUtil.getLogger().log(Level.INFO, "dailySignIn getFormHash formhash: " + formhash);
 			}				
 		}
-		DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash ends");
+		DailyRewardUtil.getLogger().log(Level.INFO, "dailySignIn getFormHash ends");
 		return formhash;	
 	}
 	

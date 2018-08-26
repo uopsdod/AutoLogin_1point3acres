@@ -63,7 +63,7 @@ public class DailyQuizTest {
     	} catch (Exception e) {
     		DailyRewardUtil.getLogger().log(Level.WARNING, e);
     		if (findDailyQuizAns.isEmpty()) {
-    			Assert.assertEquals(e.getMessage(), "no question-ans information in database");
+    			Assert.assertEquals(e.getMessage(), DailyQuizHttpPost.DAILY_QUIZ_ERROR_ANS);
     		}else if (findDailyQuizFormhash.isEmpty()) {
     			Assert.assertEquals(e.getMessage(), "You've answered the question today");
     		}
