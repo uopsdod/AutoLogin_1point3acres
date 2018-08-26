@@ -3,6 +3,7 @@ package com.amazonaws.lambda.demo.daily_reward;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
@@ -57,6 +59,7 @@ public class DailyQuizTest {
 			}
 			Assert.assertEquals(dailyQuizStatus, "NOT_EXECUTED");
     	} catch (Exception e) {
+    		DailyRewardUtil.getLogger().log(Level.WARNING, e);
     		if (findDailyQuizAns.isEmpty()) {
     			Assert.assertEquals(e.getMessage(), "no question-ans information in database");
     		}else if (findDailyQuizFormhash.isEmpty()) {
