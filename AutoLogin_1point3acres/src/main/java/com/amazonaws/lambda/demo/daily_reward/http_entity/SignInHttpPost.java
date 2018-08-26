@@ -22,6 +22,8 @@ public class SignInHttpPost extends HttpPost{
 	static private final String SIGNIN_URL = "http://www.1point3acres.com/bbs/plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1";
 	static private final String SIGNIN_PAGE_URL = "http://www.1point3acres.com/bbs/dsu_paulsign-sign.html";
 	
+	static public final String ERROR_GETFORMHASH = "SignIn getFormHash You've already signed in today";
+	
 	private SignInHttpPost(String formhash) throws UnsupportedEncodingException {
 		super(SignInHttpPost.SIGNIN_URL);
         
@@ -74,7 +76,7 @@ public class SignInHttpPost extends HttpPost{
 			
 		if (resStrGetSignin.contains("已经签到")
 			|| resStrGetSignin.contains("签到时间还未开始")) {
-			throw new Exception("SignIn getFormHash You've already signed in today");
+			throw new Exception(SignInHttpPost.ERROR_GETFORMHASH);
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
 			Matcher matcher = pattern.matcher(resStrGetSignin);

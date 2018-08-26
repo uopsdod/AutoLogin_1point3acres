@@ -3,6 +3,7 @@ package com.amazonaws.lambda.demo.daily_reward;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +16,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.SignInHttpPost;
+import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
@@ -53,7 +56,8 @@ public class DailySignInTest {
 			Assert.assertEquals(isDailySignInDone, false);
 		} catch (Exception e) {
 			if (dailySignInFormHash.isEmpty()) {
-    			Assert.assertEquals(e.getMessage(), "You've already signed in today");
+				DailyRewardUtil.getLogger().log(Level.WARNING, e);
+    			Assert.assertEquals(e.getMessage(), SignInHttpPost.ERROR_GETFORMHASH);
     		}
 		}
 		
