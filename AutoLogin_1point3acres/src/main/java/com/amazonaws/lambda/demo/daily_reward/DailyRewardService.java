@@ -39,10 +39,10 @@ public class DailyRewardService {
 		return isLoginDone;
 	}
 	
-	public boolean dailySignIn() {
+	public boolean dailySignIn(String formhash) {
 		boolean isDailySignInDone = false;
 		try {
-			HttpPost signInHttpPost = SignInHttpPost.getNewInstance(this.client);
+			HttpPost signInHttpPost = SignInHttpPost.getNewInstance(this.client, formhash);
 			if (null != signInHttpPost) {
 				HttpResponse signInResp;
 					signInResp = client.execute(signInHttpPost);
@@ -58,6 +58,10 @@ public class DailyRewardService {
 		}
 		
 		return isDailySignInDone;
+	}
+	
+	public String getDailySignInFormHash() {
+		return SignInHttpPost.getFormHash(this.client);
 	}
 	
 	public boolean dailyQuiz(String ans, String formhash) {

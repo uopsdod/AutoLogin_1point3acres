@@ -44,10 +44,9 @@ public class SignInHttpPost extends HttpPost{
 	 * @param client
 	 * @return
 	 */
-	static public HttpPost getNewInstance(org.apache.http.client.HttpClient client) {
+	static public HttpPost getNewInstance(org.apache.http.client.HttpClient client, String formhash) {
 		HttpPost signInHttpPost = null;
 		try {
-			String formhash = getFormHash(client);
 			if (!formhash.isEmpty()) {
 				signInHttpPost = new SignInHttpPost(formhash);
 			}
@@ -58,7 +57,7 @@ public class SignInHttpPost extends HttpPost{
 
 	}
 	
-	static private String getFormHash(org.apache.http.client.HttpClient client) {
+	static public String getFormHash(org.apache.http.client.HttpClient client) {
 		String formhash = "";
 		try {
 			HttpGet httpGetSignIn = new HttpGet(SignInHttpPost.SIGNIN_PAGE_URL);
