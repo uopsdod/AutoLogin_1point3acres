@@ -34,7 +34,7 @@ public class DailyQuizTest {
     }
 
     @Test
-    public void dailyQuiz() {
+    public void dailyQuiz() throws Exception {
         String username = System.getProperty("username");
         String password = System.getProperty("password");
         DailyRewardService autoLoginService = new DailyRewardService();
@@ -43,15 +43,59 @@ public class DailyQuizTest {
     	Assert.assertEquals(isLogined, true);
     	
     	boolean isDailyQuizDone = false;
-    	String findDailyQuizAns = autoLoginService.findDailyQuizAns();
-		if (!findDailyQuizAns.isEmpty()) {
-			String findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
-			if (!findDailyQuizFormhash.isEmpty()) {
-				isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
-				Assert.assertEquals(isDailyQuizDone, true);
+    	String findDailyQuizAns = "";
+    	String findDailyQuizFormhash = "";
+    	try {
+	    	findDailyQuizAns = autoLoginService.findDailyQuizAns();
+			if (!findDailyQuizAns.isEmpty()) {
+				findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
+				if (!findDailyQuizFormhash.isEmpty()) {
+					isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
+					Assert.assertEquals(isDailyQuizDone, true);
+				}
 			}
-		}
-		Assert.assertEquals(isDailyQuizDone, false);
+			Assert.assertEquals(isDailyQuizDone, false);
+    	} catch (Exception e) {
+    		if (findDailyQuizAns.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "no question-ans information in database");
+    		}else if (findDailyQuizFormhash.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "You've answered the question today");
+    		}
+    	}			
     }
+    
+//    @Test
+//    public void findDailyQuizFormhash(){
+//        String username = System.getProperty("username");
+//        String password = System.getProperty("password");
+//        DailyRewardService autoLoginService = new DailyRewardService();
+//    	boolean isLogined = autoLoginService.login(username, password);
+//    	
+//    	Assert.assertEquals(isLogined, true);
+//    	
+//    	try {
+//			String findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
+//			Assert.assertNotNull(findDailyQuizFormhash);
+//    	} catch (Exception e) {
+//    		Assert.assertEquals(e.getMessage(), "You've answered the question today");
+//    	}
+//    }
+//    
+//    @Test
+//    public void findDailyQuizAns(){
+//        String username = System.getProperty("username");
+//        String password = System.getProperty("password");
+//        DailyRewardService autoLoginService = new DailyRewardService();
+//    	boolean isLogined = autoLoginService.login(username, password);
+//    	
+//    	Assert.assertEquals(isLogined, true);
+//    	
+//    	try {
+//			String findDailyQuizAns = autoLoginService.findDailyQuizAns();
+//			Assert.assertNotNull(findDailyQuizAns);
+//    	} catch (Exception e) {
+//    		Assert.assertEquals(e.getMessage(), "no question-ans information in database");
+//    	}
+//    }   
     
 }

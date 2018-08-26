@@ -63,13 +63,14 @@ public class DailyQuizHttpPost extends HttpPost{
 
 	}
 	
-	static public String getFormHash(org.apache.http.client.HttpClient client) {
+	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
 		String formhash = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
 		if (resStrGetSignin.contains("已经参加过")
 			|| resStrGetSignin.contains("您今天已经参加过答题")) {
 			System.out.println("You've answered the question today");
+			throw new Exception("You've answered the question today");
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
 			Matcher matcher = pattern.matcher(resStrGetSignin);
@@ -82,12 +83,18 @@ public class DailyQuizHttpPost extends HttpPost{
 		return formhash;	
 	}
 	
-	static public String getAns(org.apache.http.client.HttpClient client) {
+	static public String getAns(org.apache.http.client.HttpClient client) throws Exception {
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
 		// TODO: add logic here 
 		System.out.println("no question-ans information in database");
+		boolean found = false;
+		if (found) {
+			
+		}else {
+			throw new Exception("no question-ans information in database");
+		}
 		
 		return ans;
 	}

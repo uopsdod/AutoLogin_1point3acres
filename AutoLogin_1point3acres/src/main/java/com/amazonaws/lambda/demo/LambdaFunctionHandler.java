@@ -70,25 +70,31 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 	public void execute(String username, String password) {
 		
     	/** login **/
-    	DailyRewardService autoLoginService = new DailyRewardService();
-    	boolean isLogined = autoLoginService.login(username, password);
-    	if (isLogined) {
-    		/** Daily Sign in **/
-    		String dailySignInFormHash = autoLoginService.getDailySignInFormHash();
-    		if (!dailySignInFormHash.isEmpty()) {
-    			boolean isDailySignInDone = autoLoginService.dailySignIn(dailySignInFormHash);
-    		}
-			
-			/** Daily Quiz **/
-    		String findDailyQuizAns = autoLoginService.findDailyQuizAns();
-    		if (!findDailyQuizAns.isEmpty()) {
-    			String findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
-    			if (!findDailyQuizFormhash.isEmpty()) {
-    				boolean isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
-    			}
-    		}
-		}
-			
+		try {
+	    	DailyRewardService autoLoginService = new DailyRewardService();
+	    	boolean isLogined = autoLoginService.login(username, password);
+	    	if (isLogined) {
+	    		/** Daily Sign in **/
+	    		String dailySignInFormHash = autoLoginService.getDailySignInFormHash();
+	    		if (!dailySignInFormHash.isEmpty()) {
+	    			boolean isDailySignInDone = autoLoginService.dailySignIn(dailySignInFormHash);
+	    		}
+				
+				/** Daily Quiz **/
+	    		String findDailyQuizAns = autoLoginService.findDailyQuizAns();
+	    		if (!findDailyQuizAns.isEmpty()) {
+	    			String findDailyQuizFormhash;
+					
+						findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
+					
+	    			if (!findDailyQuizFormhash.isEmpty()) {
+	    				boolean isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
+	    			}
+	    		}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}			
 		/** get login page **/
 //		HttpGet httpGet = new HttpGet("http://www.1point3acres.com/bbs/");
 //		HttpResponse loginRespGet = client.execute(httpGet);

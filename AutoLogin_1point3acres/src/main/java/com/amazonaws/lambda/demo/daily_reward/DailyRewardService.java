@@ -86,11 +86,11 @@ public class DailyRewardService {
 		return isDailyQuizDone;
 	}
 	
-	public String findDailyQuizAns() {
+	public String findDailyQuizAns() throws Exception {
 		return DailyQuizHttpPost.getAns(this.client);
 	}
 	
-	public String findDailyQuizFormhash() {
+	public String findDailyQuizFormhash() throws Exception {
 		return DailyQuizHttpPost.getFormHash(this.client);
 	}
 	
