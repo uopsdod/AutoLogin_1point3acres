@@ -67,13 +67,13 @@ public class DailyQuizHttpPost extends HttpPost{
 	}
 	
 	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
-		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash starts");
+		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getFormHash starts");
 		String formhash = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
 		if (resStrGetSignin.contains("已经参加过")
 			|| resStrGetSignin.contains("您今天已经参加过答题")) {
-			throw new Exception("You've answered the question today");
+			throw new Exception("DailyQuiz getFormHash You've answered the question today");
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
 			Matcher matcher = pattern.matcher(resStrGetSignin);
@@ -83,7 +83,7 @@ public class DailyQuizHttpPost extends HttpPost{
 				System.out.println(formhash);
 			}				
 		}
-		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash ends");
+		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getFormHash ends");
 		return formhash;	
 	}
 	

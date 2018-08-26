@@ -61,7 +61,7 @@ public class SignInHttpPost extends HttpPost{
 	}
 	
 	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
-		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash starts");
+		DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash starts");
 		String resStrGetSignin = "";
 		String formhash = "";
 		try {
@@ -74,7 +74,7 @@ public class SignInHttpPost extends HttpPost{
 			
 		if (resStrGetSignin.contains("已经签到")
 			|| resStrGetSignin.contains("签到时间还未开始")) {
-			throw new Exception("You've already signed in today");
+			throw new Exception("SignIn getFormHash You've already signed in today");
 		}else {
 			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
 			Matcher matcher = pattern.matcher(resStrGetSignin);
@@ -84,7 +84,7 @@ public class SignInHttpPost extends HttpPost{
 				System.out.println(formhash);
 			}				
 		}
-		DailyRewardUtil.getLogger().log(Level.INFO, "getFormHash ends");
+		DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash ends");
 		return formhash;	
 	}
 	
