@@ -1,10 +1,10 @@
 package com.amazonaws.lambda.demo.daily_reward.http_entity;
 
-public abstract class DailyQuiz {
+public abstract class DailyQuizAns {
 	private String questionKeyWord = "";
 	private String answerKeyWord = "";
 	
-	public DailyQuiz(String questionKeyWord, String answerKeyWord) {
+	public DailyQuizAns(String questionKeyWord, String answerKeyWord) {
 		super();
 		this.questionKeyWord = questionKeyWord;
 		this.answerKeyWord = answerKeyWord;

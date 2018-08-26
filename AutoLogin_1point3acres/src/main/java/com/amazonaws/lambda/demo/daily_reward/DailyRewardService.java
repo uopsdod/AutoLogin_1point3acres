@@ -10,8 +10,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
-import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuiz;
-import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHideContent;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAns;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsContainer;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsHideContent;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.LoginHttpPost;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.SignInHttpPost;
@@ -101,8 +102,8 @@ public class DailyRewardService {
 		return dailyQuizStatus;
 	}
 	
-	public String findDailyQuizAns() throws Exception {
-		return DailyQuizHttpPost.getAns(this.client);
+	public String findDailyQuizAns(DailyQuizAnsContainer dailyQuizAnsContainer) throws Exception {
+		return DailyQuizHttpPost.getAns(this.client, dailyQuizAnsContainer);
 	}
 	
 	public String findDailyQuizFormhash() throws Exception {

@@ -1,8 +1,8 @@
 package com.amazonaws.lambda.demo.daily_reward.http_entity;
 
-public class DailyQuizHideContent extends DailyQuiz{
+public class DailyQuizAnsHideContent extends DailyQuizAns{
 
-	public DailyQuizHideContent() {
+	public DailyQuizAnsHideContent() {
 		super("地里发帖可以隐藏内容。假如要设置200积分以上才可以看到，下面哪个语法正确"
 				,"ChangeToRegex: value=\"3\" >&nbsp;&nbsp;[hide=200]想要隐藏的内容[/hide]");
 	}

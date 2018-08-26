@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsContainer;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
 import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
@@ -71,7 +72,8 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 		try {
 			if (isLogined) {
 				/** Daily Quiz **/
-				findDailyQuizAns = autoLoginService.findDailyQuizAns();
+				DailyQuizAnsContainer dailyQuizAnsContainer = new DailyQuizAnsContainer();
+				findDailyQuizAns = autoLoginService.findDailyQuizAns(dailyQuizAnsContainer);
 				if (!findDailyQuizAns.isEmpty()) {
 					findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
 					
