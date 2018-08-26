@@ -7,8 +7,7 @@ public class DailyRewardUtil {
 	private static BaseLogger logger;
 	
 	static {
-		Logger fileLogger = LogManager.getLogger("util.fileLogger");
-		setLogger(new MyLog4jLogger(fileLogger));
+		setLogger(new ConsoleLogger());
 	}
 
 	public static BaseLogger getLogger() {
