@@ -27,9 +27,9 @@ public class DailyRewardService {
 			
 			if (loginRespContent.contains("登录失败")
 					|| loginRespContent.contains("errorhandle_")) {
-				System.out.println("登入失敗");
+				System.out.println("login failed");
 			}else {
-				System.out.println("登入成功");
+				System.out.println("login succeeded");
 				isLoginDone = true;
 			}
 		} catch (IOException e) {
@@ -64,6 +64,7 @@ public class DailyRewardService {
 		boolean isDailyQuizDone = false;
 		try {
 			// TODO: add condition to check whether quiz questions are in the database. If not, skip this part.
+			
 			HttpPost dailyQuizHttpPost = DailyQuizHttpPost.getNewInstance(this.client);
 			if (null != dailyQuizHttpPost) {
 				HttpResponse signInResp = client.execute(dailyQuizHttpPost);

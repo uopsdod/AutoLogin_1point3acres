@@ -67,7 +67,7 @@ public class SignInHttpPost extends HttpPost{
 			
 			if (resStrGetSignin.contains("已经签到")
 				|| resStrGetSignin.contains("签到时间还未开始")) {
-				System.out.println("您今天已经签到过了或者签到时间还未开始");
+				System.out.println("You've already signed in today");
 			}else {
 				Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
 				Matcher matcher = pattern.matcher(resStrGetSignin);

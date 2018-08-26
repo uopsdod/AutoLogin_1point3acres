@@ -55,9 +55,12 @@ public class DailyQuizHttpPost extends HttpPost{
 	static public HttpPost getNewInstance(org.apache.http.client.HttpClient client) {
 		HttpPost signInHttpPost = null;
 		try {
-			String formhash = getFormHash(client);
-			if (!formhash.isEmpty()) {
-				signInHttpPost = new DailyQuizHttpPost(formhash, "3");
+			String ans = getAns(client);
+			if (!ans.isEmpty()) {
+				String formhash = getFormHash(client);
+				if (!formhash.isEmpty()) {
+					signInHttpPost = new DailyQuizHttpPost(formhash, ans); // ex. "3"
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,28 +71,43 @@ public class DailyQuizHttpPost extends HttpPost{
 	
 	static private String getFormHash(org.apache.http.client.HttpClient client) {
 		String formhash = "";
-		try {
-			HttpGet httpGetSignIn = new HttpGet(DailyQuizHttpPost.DAILY_QUIZ_PAGE_URL);
-			HttpResponse SignInRespGet = client.execute(httpGetSignIn);
-			String resStrGetSignin = EntityUtils.toString(SignInRespGet.getEntity());
-			
-			if (resStrGetSignin.contains("已经参加过")
-				|| resStrGetSignin.contains("您今天已经参加过答题")) {
-				System.out.println("您今天已经参加过答题");
-			}else {
-				Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
-				Matcher matcher = pattern.matcher(resStrGetSignin);
+		String resStrGetSignin = getDailyQuizPage(client);
+		
+		if (resStrGetSignin.contains("已经参加过")
+			|| resStrGetSignin.contains("您今天已经参加过答题")) {
+			System.out.println("You've answered the question today");
+		}else {
+			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
+			Matcher matcher = pattern.matcher(resStrGetSignin);
 
-				if (matcher.find()) {
-					formhash = matcher.group(1);
-					System.out.println(formhash);
-				}				
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			if (matcher.find()) {
+				formhash = matcher.group(1);
+				System.out.println(formhash);
+			}				
 		}
 		return formhash;	
 	}
 	
+	static private String getAns(org.apache.http.client.HttpClient client) {
+		String ans = "";
+		String resStrGetSignin = getDailyQuizPage(client);
+		
+		// TODO: add logic here 
+		System.out.println("no question-ans information in database");
+		
+		return ans;
+	}
+	
+	static private String getDailyQuizPage(org.apache.http.client.HttpClient client) {
+		String resStrGetSignin = null;
+		try {
+			HttpGet httpGetSignIn = new HttpGet(DailyQuizHttpPost.DAILY_QUIZ_PAGE_URL);
+			HttpResponse SignInRespGet = client.execute(httpGetSignIn);
+			resStrGetSignin = EntityUtils.toString(SignInRespGet.getEntity());		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resStrGetSignin;
+	}
 }
 
