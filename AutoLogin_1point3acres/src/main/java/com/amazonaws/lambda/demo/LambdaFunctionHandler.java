@@ -27,6 +27,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.junit.Assert;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 
@@ -70,30 +71,38 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 	public void execute(String username, String password) {
 		
     	/** login **/
+		String dailySignInFormHash = "";
+		String findDailyQuizAns = "";
+		String findDailyQuizFormhash = "";
 		try {
 	    	DailyRewardService autoLoginService = new DailyRewardService();
 	    	boolean isLogined = autoLoginService.login(username, password);
 	    	if (isLogined) {
 	    		/** Daily Sign in **/
-	    		String dailySignInFormHash = autoLoginService.getDailySignInFormHash();
+	    		dailySignInFormHash = autoLoginService.getDailySignInFormHash();
 	    		if (!dailySignInFormHash.isEmpty()) {
 	    			boolean isDailySignInDone = autoLoginService.dailySignIn(dailySignInFormHash);
 	    		}
 				
 				/** Daily Quiz **/
-	    		String findDailyQuizAns = autoLoginService.findDailyQuizAns();
+	    		findDailyQuizAns = autoLoginService.findDailyQuizAns();
 	    		if (!findDailyQuizAns.isEmpty()) {
-	    			String findDailyQuizFormhash;
-					
-						findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
+					findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
 					
 	    			if (!findDailyQuizFormhash.isEmpty()) {
 	    				boolean isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
+	    				Assert.assertEquals(isDailyQuizDone, true);
 	    			}
 	    		}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (dailySignInFormHash.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "You've already signed in today");
+    		}else if (findDailyQuizAns.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "no question-ans information in database");
+    		}else if (findDailyQuizFormhash.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "You've answered the question today");
+    		}
 		}			
 		/** get login page **/
 //		HttpGet httpGet = new HttpGet("http://www.1point3acres.com/bbs/");
