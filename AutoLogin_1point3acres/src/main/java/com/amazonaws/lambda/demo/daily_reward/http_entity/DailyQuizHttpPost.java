@@ -93,7 +93,7 @@ public class DailyQuizHttpPost extends HttpPost{
 	}
 	
 	static public String getAns(org.apache.http.client.HttpClient client) throws Exception {
-		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getAns getAns starts");
+		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getAns starts");
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
