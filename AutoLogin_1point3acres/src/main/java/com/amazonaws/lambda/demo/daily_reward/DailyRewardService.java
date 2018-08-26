@@ -1,6 +1,8 @@
 package com.amazonaws.lambda.demo.daily_reward;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.http.HttpResponse;
@@ -8,6 +10,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuiz;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHideContent;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.LoginHttpPost;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.SignInHttpPost;
@@ -104,7 +108,5 @@ public class DailyRewardService {
 	public String findDailyQuizFormhash() throws Exception {
 		return DailyQuizHttpPost.getFormHash(this.client);
 	}
-	
-	
 	
 }

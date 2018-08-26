@@ -23,6 +23,7 @@ public class DailyQuizHttpPost extends HttpPost{
 	static private final String DAILY_QUIZ_URL = "http://www.1point3acres.com/bbs/plugin.php?id=ahome_dayquestion:pop";
 	static private final String DAILY_QUIZ_PAGE_URL = "http://www.1point3acres.com/bbs/plugin.php?id=ahome_dayquestion:pop";
 	static public final String DAILY_QUIZ_ERROR_ANS = "DailyQuiz getAns no question-ans information in database";
+	static private List<DailyQuiz> dailyQuizAnswers;
 	static private String PAYLOAD_FORMAT = 
 			"------WebKitFormBoundarybDMuZYRqRgOKYQWW\r\n" + 
 			"Content-Disposition: form-data; name=\"formhash\"\r\n" + 
@@ -40,6 +41,13 @@ public class DailyQuizHttpPost extends HttpPost{
 	
 	public static enum RESULT {
 		NOT_EXECUTED, SUCCEEDED, FAILED
+	}
+	
+	static {
+		dailyQuizAnswers = new ArrayList<>();
+		dailyQuizAnswers.add(new DailyQuizHideContent());
+//		dailyQuizAnswers.add(new DailyQuizHideContent());
+//		dailyQuizAnswers.add(new DailyQuizHideContent());
 	}
 	
 	private DailyQuizHttpPost(String answer, String formhash) throws UnsupportedEncodingException {
@@ -97,11 +105,14 @@ public class DailyQuizHttpPost extends HttpPost{
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
-		// TODO: add logic here 
-		boolean found = false;
-		if (found) {
-			
-		}else {
+		for (DailyQuiz dailyQuizAnswer : DailyQuizHttpPost.dailyQuizAnswers) {
+			ans = dailyQuizAnswer.getAns(resStrGetSignin);
+			if (!ans.isEmpty()) {
+				break;
+			}
+		}
+		
+		if (ans.isEmpty()) {
 			throw new Exception(DailyQuizHttpPost.DAILY_QUIZ_ERROR_ANS);
 		}
 		DailyRewardUtil.getLogger().log(Level.INFO, "DailyQuiz getAns ends");
