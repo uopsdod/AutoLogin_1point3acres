@@ -3,12 +3,10 @@ package com.amazonaws.lambda.demo;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.junit.Assert;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
-import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost.RESULT;
 import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.demo.util.MyLambdaLogger;
@@ -16,20 +14,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 
 public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, String> {
 
-    private AmazonS3 s3 = AmazonS3ClientBuilder.standard().build();
-    private BaseLogger logger;
-    
     public LambdaFunctionHandler() {}
-
-//    // Test purpose only.
-//    LambdaFunctionHandler(AmazonS3 s3) {
-//        this.s3 = s3;
-//    }
 
     @Override
     public String handleRequest(DailyRewardInput input, Context context) {
@@ -53,7 +42,7 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
 		
 		boolean isLogined = false;
 		boolean isDailySignInDone = false;
-		RESULT dailyQuizStatus = DailyQuizHttpPost.RESULT.NOT_EXECUTED;
+		DailyQuizHttpPost.RESULT dailyQuizStatus = DailyQuizHttpPost.RESULT.NOT_EXECUTED;
 		
     	/** login **/
 		String dailySignInFormHash = "";
