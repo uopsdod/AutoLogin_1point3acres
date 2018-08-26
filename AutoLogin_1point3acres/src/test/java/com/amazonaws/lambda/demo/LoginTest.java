@@ -23,7 +23,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 /**
- * test successful login 
+ * test login 
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest {
