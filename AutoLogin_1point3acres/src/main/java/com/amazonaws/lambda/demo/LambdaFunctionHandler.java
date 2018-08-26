@@ -77,8 +77,13 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
     		boolean isDailySignInDone = autoLoginService.dailySignIn();
 			
 			/** Daily Quiz **/
-    		boolean isDailyQuizDone = autoLoginService.dailyQuiz();
-    		
+    		String findDailyQuizAns = autoLoginService.findDailyQuizAns();
+    		if (!findDailyQuizAns.isEmpty()) {
+    			String findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
+    			if (!findDailyQuizFormhash.isEmpty()) {
+    				boolean isDailyQuizDone = autoLoginService.dailyQuiz(findDailyQuizAns, findDailyQuizFormhash);
+    			}
+    		}
 		}
 			
 		/** get login page **/

@@ -34,12 +34,12 @@ public class DailyQuizHttpPost extends HttpPost{
 			"true\r\n" + 
 			"------WebKitFormBoundarybDMuZYRqRgOKYQWW--";
 	
-	private DailyQuizHttpPost(String formhash, String answer) throws UnsupportedEncodingException {
+	private DailyQuizHttpPost(String answer, String formhash) throws UnsupportedEncodingException {
 		super(DailyQuizHttpPost.DAILY_QUIZ_URL);
         
 		/** set form data **/
+		PAYLOAD_FORMAT = PAYLOAD_FORMAT.replace("answer_to_replace", answer);
         PAYLOAD_FORMAT = PAYLOAD_FORMAT.replace("formhash_to_replace", formhash);
-        PAYLOAD_FORMAT = PAYLOAD_FORMAT.replace("answer_to_replace", answer);
 //        StringEntity se = new StringEntity(payLoadLogin);
 //        this.setEntity(new StringEntity(PAYLOAD_FORMAT, "UTF-8"));
         this.setEntity(new StringEntity(PAYLOAD_FORMAT));
@@ -52,16 +52,10 @@ public class DailyQuizHttpPost extends HttpPost{
         this.setHeader("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundarybDMuZYRqRgOKYQWW"); // important header
 	}
 	
-	static public HttpPost getNewInstance(org.apache.http.client.HttpClient client) {
+	static public HttpPost getNewInstance(org.apache.http.client.HttpClient client, String ans, String formhash) {
 		HttpPost signInHttpPost = null;
 		try {
-			String ans = getAns(client);
-			if (!ans.isEmpty()) {
-				String formhash = getFormHash(client);
-				if (!formhash.isEmpty()) {
-					signInHttpPost = new DailyQuizHttpPost(formhash, ans); // ex. "3"
-				}
-			}
+			signInHttpPost = new DailyQuizHttpPost(ans, formhash); // ex. "3"
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +63,7 @@ public class DailyQuizHttpPost extends HttpPost{
 
 	}
 	
-	static private String getFormHash(org.apache.http.client.HttpClient client) {
+	static public String getFormHash(org.apache.http.client.HttpClient client) {
 		String formhash = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		
@@ -88,7 +82,7 @@ public class DailyQuizHttpPost extends HttpPost{
 		return formhash;	
 	}
 	
-	static private String getAns(org.apache.http.client.HttpClient client) {
+	static public String getAns(org.apache.http.client.HttpClient client) {
 		String ans = "";
 		String resStrGetSignin = getDailyQuizPage(client);
 		

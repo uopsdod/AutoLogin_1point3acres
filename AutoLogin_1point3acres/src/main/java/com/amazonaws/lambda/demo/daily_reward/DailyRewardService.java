@@ -60,12 +60,12 @@ public class DailyRewardService {
 		return isDailySignInDone;
 	}
 	
-	public boolean dailyQuiz() {
+	public boolean dailyQuiz(String ans, String formhash) {
 		boolean isDailyQuizDone = false;
 		try {
 			// TODO: add condition to check whether quiz questions are in the database. If not, skip this part.
 			
-			HttpPost dailyQuizHttpPost = DailyQuizHttpPost.getNewInstance(this.client);
+			HttpPost dailyQuizHttpPost = DailyQuizHttpPost.getNewInstance(this.client, ans, formhash);
 			if (null != dailyQuizHttpPost) {
 				HttpResponse signInResp = client.execute(dailyQuizHttpPost);
 				String dailyQuizRespContent = EntityUtils.toString(signInResp.getEntity());	
@@ -80,6 +80,14 @@ public class DailyRewardService {
 		}
 		
 		return isDailyQuizDone;
+	}
+	
+	public String findDailyQuizAns() {
+		return DailyQuizHttpPost.getAns(this.client);
+	}
+	
+	public String findDailyQuizFormhash() {
+		return DailyQuizHttpPost.getFormHash(this.client);
 	}
 	
 	
