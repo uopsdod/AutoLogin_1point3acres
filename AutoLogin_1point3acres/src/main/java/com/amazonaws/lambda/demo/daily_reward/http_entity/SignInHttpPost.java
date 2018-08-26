@@ -83,7 +83,7 @@ public class SignInHttpPost extends HttpPost{
 
 			if (matcher.find()) {
 				formhash = matcher.group(1);
-				System.out.println(formhash);
+				DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash formhash: " + formhash);
 			}				
 		}
 		DailyRewardUtil.getLogger().log(Level.INFO, "SignIn getFormHash ends");
