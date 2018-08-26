@@ -57,28 +57,31 @@ public class SignInHttpPost extends HttpPost{
 
 	}
 	
-	static public String getFormHash(org.apache.http.client.HttpClient client) {
+	static public String getFormHash(org.apache.http.client.HttpClient client) throws Exception {
+		String resStrGetSignin = "";
 		String formhash = "";
 		try {
 			HttpGet httpGetSignIn = new HttpGet(SignInHttpPost.SIGNIN_PAGE_URL);
 			HttpResponse SignInRespGet = client.execute(httpGetSignIn);
-			String resStrGetSignin = EntityUtils.toString(SignInRespGet.getEntity());
-			
-			if (resStrGetSignin.contains("已经签到")
-				|| resStrGetSignin.contains("签到时间还未开始")) {
-				System.out.println("You've already signed in today");
-			}else {
-				Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
-				Matcher matcher = pattern.matcher(resStrGetSignin);
-
-				if (matcher.find()) {
-					formhash = matcher.group(1);
-					System.out.println(formhash);
-				}				
-			}
+			resStrGetSignin = EntityUtils.toString(SignInRespGet.getEntity());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}			
+			
+		if (resStrGetSignin.contains("已经签到")
+			|| resStrGetSignin.contains("签到时间还未开始")) {
+			System.out.println("You've already signed in today");
+			throw new Exception("You've already signed in today");
+		}else {
+			Pattern pattern = Pattern.compile("<input type=\"hidden\" name=\"formhash\" value=\"(.*?)\">");
+			Matcher matcher = pattern.matcher(resStrGetSignin);
+
+			if (matcher.find()) {
+				formhash = matcher.group(1);
+				System.out.println(formhash);
+			}				
 		}
+		
 		return formhash;	
 	}
 	

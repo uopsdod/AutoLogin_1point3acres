@@ -60,7 +60,7 @@ public class DailyRewardService {
 		return isDailySignInDone;
 	}
 	
-	public String getDailySignInFormHash() {
+	public String getDailySignInFormHash() throws Exception {
 		return SignInHttpPost.getFormHash(this.client);
 	}
 	

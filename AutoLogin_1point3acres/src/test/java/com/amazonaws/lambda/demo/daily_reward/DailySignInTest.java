@@ -42,13 +42,20 @@ public class DailySignInTest {
     	
     	Assert.assertEquals(isLogined, true);
     	
-		String dailySignInFormHash = autoLoginService.getDailySignInFormHash();
-		boolean isDailySignInDone = false;
-		if (!dailySignInFormHash.isEmpty()) {
-			isDailySignInDone = autoLoginService.dailySignIn(dailySignInFormHash);
-			Assert.assertEquals(isDailySignInDone, true);
+		String dailySignInFormHash = "";
+		try {
+			dailySignInFormHash = autoLoginService.getDailySignInFormHash();
+			boolean isDailySignInDone = false;
+			if (!dailySignInFormHash.isEmpty()) {
+				isDailySignInDone = autoLoginService.dailySignIn(dailySignInFormHash);
+				Assert.assertEquals(isDailySignInDone, true);
+			}
+			Assert.assertEquals(isDailySignInDone, false);
+		} catch (Exception e) {
+			if (dailySignInFormHash.isEmpty()) {
+    			Assert.assertEquals(e.getMessage(), "You've already signed in today");
+    		}
 		}
-		Assert.assertEquals(isDailySignInDone, false);
 		
     }
     
