@@ -15,7 +15,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
-
+/**
+ * TODO it's time to work on tempalte stuff
+ * @author sam
+ *
+ */
 public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, String> {
 
     public LambdaFunctionHandler() {}
