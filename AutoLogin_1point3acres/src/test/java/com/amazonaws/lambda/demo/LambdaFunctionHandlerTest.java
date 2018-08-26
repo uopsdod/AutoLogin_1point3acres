@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
+import com.amazonaws.lambda.demo.daily_reward.S3Service;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
@@ -64,6 +65,16 @@ public class LambdaFunctionHandlerTest {
         Context ctx = createContext();
         String username = System.getProperty("username");
         String password = System.getProperty("password");
+        String accessKeyId = System.getProperty("aws.accessKeyId");
+        String accessSecretKey = System.getProperty("aws.accessSecretKey");
+        String region = System.getProperty("aws.region");
+        
+//        S3Service s3Sample = new S3Service();
+        try {
+        	S3Service.test(accessKeyId, accessSecretKey, region);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         
         DailyRewardInput AutoLoginInput = new DailyRewardInput(username, password);
         
