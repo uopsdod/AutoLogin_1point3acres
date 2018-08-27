@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
+import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsContainer;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost.RESULT;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
@@ -50,7 +51,8 @@ public class DailyQuizTest {
     	String findDailyQuizAns = "";
     	String findDailyQuizFormhash = "";
     	try {
-	    	findDailyQuizAns = autoLoginService.findDailyQuizAns();
+    		DailyQuizAnsContainer DailyQuizAnsContainer = new DailyQuizAnsContainer();
+	    	findDailyQuizAns = autoLoginService.findDailyQuizAns(DailyQuizAnsContainer);
 			if (!findDailyQuizAns.isEmpty()) {
 				findDailyQuizFormhash = autoLoginService.findDailyQuizFormhash();
 				if (!findDailyQuizFormhash.isEmpty()) {
