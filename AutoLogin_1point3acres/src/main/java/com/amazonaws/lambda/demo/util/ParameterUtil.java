@@ -85,15 +85,7 @@ public class ParameterUtil {
 	 * @return
 	 */
 	public static PutParameterResult putParameterStr(String name, String value) {
-
-		PutParameterRequest request = new PutParameterRequest();
-		request.withName(name).withValue(value).withType(ParameterType.String)
-				.withDescription("decription here")
-				.setOverwrite(true);
-
-		PutParameterResult putParameterResult = client.putParameter(request);
-		System.out.println("hey");
-		return putParameterResult;
+		return putParameter(name, value, ParameterType.String);
 	}
 	
 	/**
@@ -103,15 +95,25 @@ public class ParameterUtil {
 	 * @return
 	 */
 	public static PutParameterResult putParameterSecuredStr(String name, String value) {
-
+		return putParameter(name, value, ParameterType.SecureString);
+	}
+	
+	/**
+	 * create, update
+	 * @param name
+	 * @param value
+	 * @param parameterType
+	 * @return
+	 */
+	public static PutParameterResult putParameter(String name, String value, ParameterType parameterType) {
 		PutParameterRequest request = new PutParameterRequest();
-		request.withName(name).withValue(value).withType(ParameterType.SecureString)
+		request.withName(name).withValue(value).withType(parameterType)
 				.withDescription("decription here")
 				.setOverwrite(true);
 
 		PutParameterResult putParameterResult = client.putParameter(request);
 		System.out.println("hey");
-		return putParameterResult;
+		return putParameterResult;		
 	}
 	
 	/**
