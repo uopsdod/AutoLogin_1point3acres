@@ -44,6 +44,9 @@ public class LambdaFunctionHandler implements RequestHandler<Object, String> {
     		String username = credential.get("username").getAsString();
     		String password = credential.get("password").getAsString();
     		
+    		DailyRewardUtil.getLogger().log(Level.INFO, "username: " + username);
+    		DailyRewardUtil.getLogger().log(Level.INFO, "password: " + password);
+    		
     		execute(username, password);
     	}
 		
