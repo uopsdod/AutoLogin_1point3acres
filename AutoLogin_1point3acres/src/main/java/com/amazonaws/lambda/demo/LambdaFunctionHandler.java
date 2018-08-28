@@ -1,5 +1,6 @@
 package com.amazonaws.lambda.demo;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -10,10 +11,18 @@ import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
 import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.demo.util.MyLambdaLogger;
+import com.amazonaws.lambda.demo.util.ParameterUtil;
+import com.amazonaws.lambda.demo.util.ParameterUtil.PathBuilder;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult;
+import com.amazonaws.services.simplesystemsmanagement.model.Parameter;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * TODO it's time to work on tempalte stuff
@@ -32,8 +41,18 @@ public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, S
     	DailyRewardUtil.getLogger().log(Level.INFO, "input Context: " + ReflectionToStringBuilder.toString(context));
         
         /** Get Daily Reward **/
-		execute(input.getUsername(), input.getPassword()); // correct
-        
+    	GetParametersByPathResult getResult = ParameterUtil.getParametersByPath(ParameterUtil.PathBuilder.root(ParameterUtil.Table.USER.getName()).build());
+    	List<Parameter> parameters = getResult.getParameters();
+    	for (Parameter param : parameters) {
+    		String user = param.getName();
+    		String value = param.getValue();
+    		JsonParser parser = new JsonParser();
+    		JsonObject credential = parser.parse(value).getAsJsonObject();
+    		String username = credential.get("username").getAsString();
+    		String password = credential.get("password").getAsString();
+    		
+    		execute(username, password);
+    	}
 		
 		DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function ends");
 		

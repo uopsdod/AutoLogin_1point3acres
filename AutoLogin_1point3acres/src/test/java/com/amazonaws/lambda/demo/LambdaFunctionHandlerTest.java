@@ -64,13 +64,13 @@ public class LambdaFunctionHandlerTest {
     public void testLambdaFunctionHandler() {
         LambdaFunctionHandler handler = new LambdaFunctionHandler();
         Context ctx = createContext();
-        String username = System.getProperty("username");
-        String password = System.getProperty("password");
-        String accessKeyId = System.getProperty("aws.accessKeyId");
-        String accessSecretKey = System.getProperty("aws.accessSecretKey");
-        String region = System.getProperty("aws.region");
+//        String username = System.getProperty("username");
+//        String password = System.getProperty("password");
+//        String accessKeyId = System.getProperty("aws.accessKeyId");
+//        String accessSecretKey = System.getProperty("aws.accessSecretKey");
+//        String region = System.getProperty("aws.region");
         
-        DailyRewardInput AutoLoginInput = new DailyRewardInput(username, password);
+        DailyRewardInput AutoLoginInput = new DailyRewardInput("doesnotmatter", "doesnotmatter");
         
         String output = handler.handleRequest(AutoLoginInput, ctx);
 
