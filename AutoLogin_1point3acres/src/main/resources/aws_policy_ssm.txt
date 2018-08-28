@@ -1,0 +1,12 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "ssm:GetParametersByPath"
+            ],
+            "Resource": "arn:aws:ssm:us-west-2:140773910250:parameter/*",
+            "Effect": "Allow"
+        }
+    ]
+}
