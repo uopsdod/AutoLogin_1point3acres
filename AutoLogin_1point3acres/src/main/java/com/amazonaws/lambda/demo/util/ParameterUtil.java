@@ -7,6 +7,8 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
 import com.amazonaws.services.simplesystemsmanagement.model.DeleteParameterRequest;
 import com.amazonaws.services.simplesystemsmanagement.model.DeleteParameterResult;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathRequest;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest;
@@ -76,7 +78,22 @@ public class ParameterUtil {
 		GetParametersByPathResult parametersByPath = client.getParametersByPath(request);
 
 		return parametersByPath;
-	}	
+	}
+	
+	/**
+	 * get
+	 * @param path
+	 * @return
+	 */
+	public static GetParameterResult getParameter(String name) {
+
+		GetParameterRequest request = new GetParameterRequest();
+		request.withName(name).isWithDecryption();
+		
+		GetParameterResult parameter = client.getParameter(request);
+
+		return parameter;
+	}
 	
 	/**
 	 * create update
