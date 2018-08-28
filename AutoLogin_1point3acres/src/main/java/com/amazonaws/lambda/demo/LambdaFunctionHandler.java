@@ -5,22 +5,15 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
-import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.demo.util.MyLambdaLogger;
 import com.amazonaws.lambda.demo.util.ParameterUtil;
-import com.amazonaws.lambda.demo.util.ParameterUtil.PathBuilder;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult;
 import com.amazonaws.services.simplesystemsmanagement.model.Parameter;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -29,12 +22,12 @@ import com.google.gson.JsonParser;
  * @author sam
  *
  */
-public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, String> {
+public class LambdaFunctionHandler implements RequestHandler<Object, String> {
 
     public LambdaFunctionHandler() {}
 
     @Override
-    public String handleRequest(DailyRewardInput input, Context context) {
+    public String handleRequest(Object input, Context context) {
     	DailyRewardUtil.setLogger(new MyLambdaLogger(context.getLogger()));
     	DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function starts");
     	DailyRewardUtil.getLogger().log(Level.INFO, "input DailyRewardInput: " + ReflectionToStringBuilder.toString(input));
