@@ -50,13 +50,14 @@ public class LambdaFunctionHandlerTest {
     public void testLambdaFunctionHandler() {
         LambdaFunctionHandler handler = new LambdaFunctionHandler();
         Context ctx = createContext();
-//        String username = System.getProperty("username");
-//        String password = System.getProperty("password");
+        String username = System.getProperty("username");
+        String password = System.getProperty("password");
 //        String accessKeyId = System.getProperty("aws.accessKeyId");
 //        String accessSecretKey = System.getProperty("aws.accessSecretKey");
 //        String region = System.getProperty("aws.region");
         
-        String output = handler.handleRequest(new Object(), ctx);
+//        String output = handler.handleRequest(new Object(), ctx);
+        handler.execute(username, password);
 
     }
 }
