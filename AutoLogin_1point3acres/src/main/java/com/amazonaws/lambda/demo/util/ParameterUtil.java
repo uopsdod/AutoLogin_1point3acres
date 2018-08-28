@@ -73,7 +73,7 @@ public class ParameterUtil {
 	public static GetParametersByPathResult getParametersByPath(String path) {
 
 		GetParametersByPathRequest request = new GetParametersByPathRequest();
-		request.withPath(path).isWithDecryption();
+		request.withPath(path).setWithDecryption(true);
 		
 		GetParametersByPathResult parametersByPath = client.getParametersByPath(request);
 
