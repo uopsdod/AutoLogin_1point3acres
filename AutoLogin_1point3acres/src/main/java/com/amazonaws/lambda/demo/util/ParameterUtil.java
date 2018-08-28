@@ -112,7 +112,6 @@ public class ParameterUtil {
 				.setOverwrite(true);
 
 		PutParameterResult putParameterResult = client.putParameter(request);
-		System.out.println("hey");
 		return putParameterResult;		
 	}
 	
@@ -145,7 +144,6 @@ public class ParameterUtil {
 		request.withName(name);
 		
 		DeleteParameterResult deleteParameterResult = client.deleteParameter(request);
-		System.out.println("hey");
 		
 		return deleteParameterResult;
 	}
