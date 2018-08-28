@@ -41,6 +41,11 @@ public class ParameterUtil {
 		
 	}
 	
+	/**
+	 * use this to build path string 
+	 * @author sam
+	 *
+	 */
 	public static class PathBuilder{
 		private StringBuilder finalPath = new StringBuilder();
 		public PathBuilder(String path) {
@@ -109,6 +114,11 @@ public class ParameterUtil {
 		return putParameterResult;
 	}
 	
+	/**
+	 * delete all parameters in a specific path 
+	 * @param path
+	 * @return
+	 */
 	public static int deleteParameterbyPath(String path) {
 		GetParametersByPathResult parametersByPathResult = getParametersByPath(path);
 		int deleteCount = 0;
@@ -122,6 +132,11 @@ public class ParameterUtil {
 		return deleteCount;
 	}
 	
+	/**
+	 * delete
+	 * @param name
+	 * @return
+	 */
 	public static DeleteParameterResult deleteParameter(String name) {
 
 		DeleteParameterRequest request = new DeleteParameterRequest();
