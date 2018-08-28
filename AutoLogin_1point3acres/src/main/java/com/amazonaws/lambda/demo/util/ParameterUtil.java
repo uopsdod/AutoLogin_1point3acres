@@ -24,8 +24,9 @@ public class ParameterUtil {
 	 * @author sam
 	 *
 	 */
-	private enum Table {
-		USER("user");
+	public enum Table {
+		USER("user")
+		,UNIT_TEST("unit_test");
 		private String name;
 
 		private Table(String name) {
@@ -40,7 +41,7 @@ public class ParameterUtil {
 		
 	}
 	
-	private static class PathBuilder{
+	public static class PathBuilder{
 		private StringBuilder finalPath = new StringBuilder();
 		public PathBuilder(String path) {
 			this.finalPath.append(path);
@@ -62,7 +63,7 @@ public class ParameterUtil {
 	 * @param path
 	 * @return
 	 */
-	private static GetParametersByPathResult getParametersByPath(String path) {
+	public static GetParametersByPathResult getParametersByPath(String path) {
 
 		GetParametersByPathRequest request = new GetParametersByPathRequest();
 		request.withPath(path).isWithDecryption();
@@ -78,7 +79,7 @@ public class ParameterUtil {
 	 * @param value
 	 * @return
 	 */
-	private static PutParameterResult putParameterStr(String name, String value) {
+	public static PutParameterResult putParameterStr(String name, String value) {
 
 		PutParameterRequest request = new PutParameterRequest();
 		request.withName(name).withValue(value).withType(ParameterType.String)
@@ -96,7 +97,7 @@ public class ParameterUtil {
 	 * @param value
 	 * @return
 	 */
-	private static PutParameterResult putParameterSecuredStr(String name, String value) {
+	public static PutParameterResult putParameterSecuredStr(String name, String value) {
 
 		PutParameterRequest request = new PutParameterRequest();
 		request.withName(name).withValue(value).withType(ParameterType.SecureString)
@@ -108,7 +109,7 @@ public class ParameterUtil {
 		return putParameterResult;
 	}
 	
-	private static int deleteParameterbyPath(String path) {
+	public static int deleteParameterbyPath(String path) {
 		GetParametersByPathResult parametersByPathResult = getParametersByPath(path);
 		int deleteCount = 0;
 		for (Parameter param : parametersByPathResult.getParameters()) {
@@ -121,7 +122,7 @@ public class ParameterUtil {
 		return deleteCount;
 	}
 	
-	private static DeleteParameterResult deleteParameter(String name) {
+	public static DeleteParameterResult deleteParameter(String name) {
 
 		DeleteParameterRequest request = new DeleteParameterRequest();
 		request.withName(name);
@@ -132,26 +133,4 @@ public class ParameterUtil {
 		return deleteParameterResult;
 	}
 	
-	public static void main(String[] args) {
-		
-		int deleteCount = deleteParameterbyPath(PathBuilder.root(Table.USER.getName()).build());
-		
-		PutParameterResult putParameterResult = null;
-		putParameterResult = putParameterStr(PathBuilder.root(Table.USER.getName()).go("tom").build(),"88888100");
-		putParameterResult = putParameterStr(PathBuilder.root(Table.USER.getName()).go("kim").build(),"88888102");
-		putParameterResult = putParameterSecuredStr(PathBuilder.root(Table.USER.getName()).go("jane").build(),"88888103");
-		putParameterResult = putParameterSecuredStr(PathBuilder.root(Table.USER.getName()).go("lucy").build(),"88888104");
-		
-		GetParametersByPathResult parametersByPathRequestResultAfterPutting = getParametersByPath(Table.USER.getName());
-		
-		// put break point here to compare the putParameterResult size
-		DeleteParameterResult deleteParameterResult = null;
-		deleteParameterResult = deleteParameter(PathBuilder.root(Table.USER.getName()).go("tom").build());
-		deleteParameterResult = deleteParameter(PathBuilder.root(Table.USER.getName()).go("lucy").build());
-		
-		GetParametersByPathResult parametersByPathRequestResultAfterDeleting = getParametersByPath(PathBuilder.root(Table.USER.getName()).build());
-		
-//		Map<String, String> parameterStore = ParameterUtil.parameterStore();
-		System.out.println("hey");
-	}
 }
