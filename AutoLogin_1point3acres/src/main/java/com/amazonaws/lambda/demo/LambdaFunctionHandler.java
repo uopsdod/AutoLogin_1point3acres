@@ -1,40 +1,55 @@
 package com.amazonaws.lambda.demo;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
 import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsContainer;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
-import com.amazonaws.lambda.demo.util.BaseLogger;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.demo.util.MyLambdaLogger;
+import com.amazonaws.lambda.demo.util.ParameterUtil;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult;
+import com.amazonaws.services.simplesystemsmanagement.model.Parameter;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * TODO it's time to work on tempalte stuff
  * @author sam
  *
  */
-public class LambdaFunctionHandler implements RequestHandler<DailyRewardInput, String> {
+public class LambdaFunctionHandler implements RequestHandler<Object, String> {
 
     public LambdaFunctionHandler() {}
 
     @Override
-    public String handleRequest(DailyRewardInput input, Context context) {
+    public String handleRequest(Object input, Context context) {
     	DailyRewardUtil.setLogger(new MyLambdaLogger(context.getLogger()));
     	DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function starts");
     	DailyRewardUtil.getLogger().log(Level.INFO, "input DailyRewardInput: " + ReflectionToStringBuilder.toString(input));
     	DailyRewardUtil.getLogger().log(Level.INFO, "input Context: " + ReflectionToStringBuilder.toString(context));
         
         /** Get Daily Reward **/
-		execute(input.getUsername(), input.getPassword()); // correct
-        
+    	GetParametersByPathResult getResult = ParameterUtil.getParametersByPath(ParameterUtil.PathBuilder.root(ParameterUtil.Table.USER.getName()).build());
+    	List<Parameter> parameters = getResult.getParameters();
+    	for (Parameter param : parameters) {
+    		String user = param.getName();
+    		String value = param.getValue();
+    		JsonParser parser = new JsonParser();
+    		JsonObject credential = parser.parse(value).getAsJsonObject();
+    		String username = credential.get("username").getAsString();
+    		String password = credential.get("password").getAsString();
+    		
+    		DailyRewardUtil.getLogger().log(Level.INFO, "username: " + username);
+    		DailyRewardUtil.getLogger().log(Level.INFO, "password: " + "********");
+    		
+    		execute(username, password);
+    	}
 		
 		DailyRewardUtil.getLogger().log(Level.INFO, "Lambda function ends");
 		

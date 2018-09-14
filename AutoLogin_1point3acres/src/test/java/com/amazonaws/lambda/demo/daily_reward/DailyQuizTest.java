@@ -1,7 +1,5 @@
 package com.amazonaws.lambda.demo.daily_reward;
 
-import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.util.logging.Level;
 
@@ -9,23 +7,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.amazonaws.lambda.demo.daily_reward.DailyRewardInput;
-import com.amazonaws.lambda.demo.daily_reward.DailyRewardService;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizAnsContainer;
 import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost;
-import com.amazonaws.lambda.demo.daily_reward.http_entity.DailyQuizHttpPost.RESULT;
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.events.S3Event;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
 
 /**
  * test daily quiz
