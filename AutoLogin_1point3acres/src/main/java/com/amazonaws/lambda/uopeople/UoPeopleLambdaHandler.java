@@ -76,12 +76,16 @@ public class UoPeopleLambdaHandler implements RequestHandler<Object, String> {
     	/** login **/
 
 		CourseRegistrationService service = new CourseRegistrationService();
+//		service.getHPUpdate();
+//		service.courseConfirm();
 
 		isLogined = service.login(email, password);
+		System.out.println("isLogined: " + isLogined);
 		
 		try {
 	    	if (isLogined) {
 				service.courseConfirm();
+//				service.courseConfirm();
 			}
 		} catch (Exception e) {
 			DailyRewardUtil.getLogger().log(Level.WARNING, e);

@@ -2,13 +2,18 @@ package com.amazonaws.lambda.uopeople.course_register.http_entity;
 
 import com.amazonaws.lambda.demo.util.DailyRewardUtil;
 import com.amazonaws.lambda.uopeople.course_register.http_entity.http_entity.CourseConfirmationHttpPost;
+import com.amazonaws.lambda.uopeople.course_register.http_entity.http_entity.GetHPUpdatesHttpGet;
 import com.amazonaws.lambda.uopeople.course_register.http_entity.http_entity.LoginHttpPost;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -26,7 +31,30 @@ public class CourseRegistrationService {
 	private List<String> cookiesStrings = new ArrayList<>();
 
 	public CourseRegistrationService() {
-		this.client = HttpClientBuilder.create().build();
+//		BasicCookieStore cookieStore = new BasicCookieStore();
+//		BasicClientCookie cookie = null;
+//		cookie = new BasicClientCookie("__cfduid", "decd8edcacf4e3dfc39fa90546dba86e91558372273");
+//		cookie.setDomain("uopeople.edu"); // .uopeople.edu
+//		cookie.setPath("/");
+		this.client = HttpClientBuilder.create()
+				.setRedirectStrategy(new LaxRedirectStrategy())
+//				.setRedirectStrategy(new DefaultRedirectStrategy() {
+//			/** Redirectable methods. */
+//			private String[] REDIRECT_METHODS = new String[] {
+//					HttpGet.METHOD_NAME, HttpPost.METHOD_NAME, HttpHead.METHOD_NAME
+//			};
+//
+//			@Override
+//			protected boolean isRedirectable(String method) {
+//				for (String m : REDIRECT_METHODS) {
+//					if (m.equalsIgnoreCase(method)) {
+//						return true;
+//					}
+//				}
+//				return false;
+//			}
+//		})
+				.build();
 
 	}
 	
@@ -40,7 +68,8 @@ public class CourseRegistrationService {
 				DailyRewardUtil.getLogger().log(Level.INFO, "cookies header: " + cookies[i]);
 				String cookieStr = cookies[i].getValue().substring(0, cookies[i].getValue().indexOf(';'));
 				DailyRewardUtil.getLogger().log(Level.INFO, "cookies header - value: " + cookieStr);
-				cookiesStrings.add(cookieStr);
+				if (!cookiesStrings.contains(cookieStr))
+					cookiesStrings.add(cookieStr);
 			}
 			Header[] allHeaders = loginResp.getAllHeaders();
 //			for (int i = 0; i < allHeaders.length; i++) {
@@ -62,6 +91,19 @@ public class CourseRegistrationService {
 		return isLoginDone;
 	}
 
+	public void getHPUpdate(){
+		try{
+			HttpResponse courseConfimResp = this.client.execute(new GetHPUpdatesHttpGet());
+			DailyRewardUtil.getLogger().log(Level.INFO, "response: " + courseConfimResp);
+			String courseConfrimContent = EntityUtils.toString(courseConfimResp.getEntity());
+			DailyRewardUtil.getLogger().log(Level.INFO, "response: " + courseConfrimContent);
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
 	public boolean courseConfirm() {
 		DailyRewardUtil.getLogger().log(Level.INFO, "courseConfirm starts");
 		boolean isLoginDone = false;
@@ -72,19 +114,22 @@ public class CourseRegistrationService {
 
 			BasicCookieStore cookieStore = new BasicCookieStore();
 			// add cookie info
-			for (String cookieStr: cookiesStrings) {
-				String[] parts = cookieStr.split("=");
-				String key = parts[0];
-				String val = parts[1];
-				DailyRewardUtil.getLogger().log(Level.INFO, "key-val: " + key + " ---- " + val);
-				// add cookie one by one
-				BasicClientCookie cookie = new BasicClientCookie(key, val);
-				cookie.setDomain("uopeople.edu"); // .uopeople.edu
-				cookie.setPath("/");
-				cookieStore.addCookie(cookie);
-			}
-
-//			BasicClientCookie cookie = new BasicClientCookie("__cfduid", "d2c1d194efb3b86518e2af97fbcf980031558364809");
+//			for (String cookieStr: cookiesStrings) {
+//				String[] parts = cookieStr.split("=");
+//				String key = parts[0];
+//				String val = parts[1];
+//				DailyRewardUtil.getLogger().log(Level.INFO, "key-val: " + key + " ---- " + val);
+//				// add cookie one by one
+//				BasicClientCookie cookie = new BasicClientCookie(key, val);
+//				cookie.setDomain("uopeople.edu"); // .uopeople.edu
+//				cookie.setPath("/");
+//				cookieStore.addCookie(cookie);
+//			}
+//			BasicClientCookie cookie = null;
+//			cookie = new BasicClientCookie("ASP.NET_SessionId", "y0gcdpeocj1sxwlf2spkev40");
+//			cookie.setDomain("your.uopeople.edu\n"); // .uopeople.edu
+//			cookie.setPath("/");
+//			cookie = new BasicClientCookie("__cfduid", "df32df183169bad47ded402619cb902f81558379068");
 //			cookie.setDomain("uopeople.edu"); // .uopeople.edu
 //			cookie.setPath("/");
 //			cookieStore.addCookie(cookie);
@@ -92,8 +137,8 @@ public class CourseRegistrationService {
 //			cookie.setDomain("uopeople.edu"); // .uopeople.edu
 //			cookie.setPath("/");
 //			cookieStore.addCookie(cookie);
-//			cookie = new BasicClientCookie("ASP.NET_SessionId\n", "hrp2esugs4yp5uzb0yo4hepn");
-//			cookie.setDomain("uopeople.edu"); // .uopeople.edu
+//			cookie = new BasicClientCookie("ASP.NET_SessionId", "gerzahyfxnut2sxuhcsvlqce");
+//			cookie.setDomain("mycourses.uopeople.edu"); // .uopeople.edu
 //			cookie.setPath("/");
 //			cookieStore.addCookie(cookie);
 
@@ -103,8 +148,20 @@ public class CourseRegistrationService {
 //			response = instance.execute(request, localContext);
 
 			HttpResponse courseConfimResp = this.client.execute(new CourseConfirmationHttpPost(cookiesStrings), localContext);
+
+			DailyRewardUtil.getLogger().log(Level.INFO, "response: " + courseConfimResp);
+			Header[] locations = courseConfimResp.getHeaders("Location");
+//			String location = EntityUtils.toString();
+//			DailyRewardUtil.getLogger().log(Level.INFO, "response - location: " + locations[0].getValue().toString());
 			String courseConfrimContent = EntityUtils.toString(courseConfimResp.getEntity());
-			DailyRewardUtil.getLogger().log(Level.INFO, "response: " + courseConfrimContent);
+			DailyRewardUtil.getLogger().log(Level.INFO, "response - entity: " + courseConfrimContent);
+
+//			String redirectUrl = "https://mycourses.uopeople.edu" + locations[0].getValue().toString();
+//			DailyRewardUtil.getLogger().log(Level.INFO, "redirectUrl: " + redirectUrl);
+//			HttpResponse redirectResult = this.client.execute(new HttpGet(redirectUrl));
+//			DailyRewardUtil.getLogger().log(Level.INFO, "redirectResult: " + redirectResult);
+//			String redirectResultContent = EntityUtils.toString(redirectResult.getEntity());
+//			DailyRewardUtil.getLogger().log(Level.INFO, "redirectResult - entity: " + redirectResultContent);
 
 		} catch (IOException e) {
 			DailyRewardUtil.getLogger().log(Level.INFO, e);
