@@ -45,7 +45,7 @@ public class CourseConfirmationHttpPost extends HttpPost{
 
         // TODO: still cannot set the cookie dynamically
         // 1. try some other ways to set cookie
-        // 2. finish the logout part ? 
+        // 2. finish the logout part ?
         this.setHeader("cookie",
 //                "__cfduid=df9f2d8679e54976c61f0a8423354980d1558275766; " +
                         "ASP.NET_SessionId=hfwdj4hsz0zvwecs5mj4tovm; " +
