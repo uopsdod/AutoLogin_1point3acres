@@ -37,7 +37,7 @@ public class CourseRegistrationService {
 //		cookie.setDomain("uopeople.edu"); // .uopeople.edu
 //		cookie.setPath("/");
 		this.client = HttpClientBuilder.create()
-				.setRedirectStrategy(new LaxRedirectStrategy())
+				.setRedirectStrategy(new LaxRedirectStrategy()) // ref: https://www.baeldung.com/httpclient-redirect-on-http-post
 //				.setRedirectStrategy(new DefaultRedirectStrategy() {
 //			/** Redirectable methods. */
 //			private String[] REDIRECT_METHODS = new String[] {
